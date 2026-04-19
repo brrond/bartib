@@ -285,6 +285,12 @@ To get started, view the `start` help with `bartib start --help`")
                         .required(false),
                 ),
         )
+        .subcommand(
+            SubCommand::with_name("commit")
+                .about("commits current activity")
+                .arg(arg_project.clone().required(true))
+                .arg(arg_description.clone().required(true))
+        )
         .get_matches();
 
     let file_name = matches.value_of("file")
@@ -381,6 +387,12 @@ fn run_subcommand(matches: &ArgMatches, file_name: &str) -> Result<()> {
             let processors = create_processors_for_arguments(sub_m);
             let writer = create_status_writer(sub_m);
             bartib::controller::status::show_status(file_name, filter, processors, writer.borrow())
+        }
+        ("commit", Some(sub_m)) => {
+            let project_name = sub_m.value_of("project").unwrap();
+            let activity_description = sub_m.value_of("description").unwrap();
+
+            bartib::controller::manipulation::commit(file_name, project_name, activity_description)
         }
         _ => bail!("Unknown command"),
     }
