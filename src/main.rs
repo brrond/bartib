@@ -91,7 +91,6 @@ fn main() -> Result<()> {
         .long("description")
         .value_name("DESCRIPTION")
         .help("the description of the new activity")
-        .default_value("No description")
         .takes_value(true);
 
     let arg_project = Arg::with_name("project")
@@ -99,7 +98,6 @@ fn main() -> Result<()> {
         .long("project")
         .value_name("PROJECT")
         .help("the project to which the new activity belongs")
-        .default_value("Unknown project")
         .takes_value(true);
 
     let matches = App::new("bartib")
@@ -121,8 +119,8 @@ To get started, view the `start` help with `bartib start --help`")
         .subcommand(
             SubCommand::with_name("start")
                 .about("starts a new activity")
-                .arg(arg_project.clone().required(true))
-                .arg(arg_description.clone().required(true))
+                .arg(arg_project.clone())
+                .arg(arg_description.clone())
                 .arg(&arg_time),
         )
         .subcommand(
@@ -302,8 +300,8 @@ To get started, view the `start` help with `bartib start --help`")
 fn run_subcommand(matches: &ArgMatches, file_name: &str) -> Result<()> {
     match matches.subcommand() {
         ("start", Some(sub_m)) => {
-            let project_name = sub_m.value_of("project").unwrap();
-            let activity_description = sub_m.value_of("description").unwrap();
+            let project_name = sub_m.value_of("project").unwrap_or("Unknown project");
+            let activity_description = sub_m.value_of("description").unwrap_or("No description");
             let time = get_time_argument_or_ignore(sub_m.value_of("time"), "-t/--time")
                 .map(|t| Local::now().date_naive().and_time(t));
 
