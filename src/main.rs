@@ -91,6 +91,7 @@ fn main() -> Result<()> {
         .long("description")
         .value_name("DESCRIPTION")
         .help("the description of the new activity")
+        .default_value("No description")
         .takes_value(true);
 
     let arg_project = Arg::with_name("project")
@@ -98,6 +99,7 @@ fn main() -> Result<()> {
         .long("project")
         .value_name("PROJECT")
         .help("the project to which the new activity belongs")
+        .default_value("Unknown project")
         .takes_value(true);
 
     let matches = App::new("bartib")
