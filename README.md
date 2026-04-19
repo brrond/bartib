@@ -52,7 +52,7 @@ I (@brrond) discovered this project just a couple of days ago, but I'm already a
   
     Synonym of using `bartib change -p ... -d ... && bartib start`
 
-- More colors for outputs (WIP).
+- More colors for outputs ([#2](https://github.com/brrond/bartib/pull/2)).
 
 - Integration with tools (WIP)
 
