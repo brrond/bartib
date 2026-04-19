@@ -211,3 +211,18 @@ fn stop_all_running_activities(
         }
     }
 }
+
+pub fn commit(file_name: &str, project_name: &str, activity_description: &str) -> Result<()> {
+    change(
+        file_name,
+        Option::Some(project_name),
+        Option::Some(activity_description),
+        Option::None,
+    )
+    .and(start(
+        file_name,
+        "Unknown project",
+        "No description",
+        Option::None,
+    ))
+}
