@@ -7,6 +7,7 @@ use crate::data::activity;
 use crate::data::bartib_file;
 use crate::data::getter;
 use crate::view::format_util;
+use crate::view::format_util::print_activity_update;
 
 // starts a new activity
 pub fn start(
@@ -40,11 +41,12 @@ fn save_new_activity(
     file_content: &mut Vec<bartib_file::Line>,
     activity: activity::Activity,
 ) -> Result<(), Error> {
-    println!(
-        "Started activity: \"{}\" ({}) at {}",
-        activity.description,
-        activity.project,
-        activity.start.format(conf::FORMAT_DATETIME)
+    print_activity_update(
+        "Started activity",
+        &activity.description,
+        &activity.project,
+        &activity.start.format(conf::FORMAT_DATETIME).to_string(),
+        Option::None,
     );
 
     file_content.push(bartib_file::Line::for_activity(activity));
@@ -81,11 +83,12 @@ pub fn change(
                 }
 
                 if changed {
-                    println!(
-                        "Changed activity: \"{}\" ({}) started at {}",
-                        activity.description,
-                        activity.project,
-                        activity.start.format(conf::FORMAT_DATETIME)
+                    print_activity_update(
+                        "Changed activity",
+                        &activity.description,
+                        &activity.project,
+                        &activity.start.format(conf::FORMAT_DATETIME).to_string(),
+                        Option::None,
                     );
                     line.set_changed();
                 }
@@ -198,14 +201,13 @@ fn stop_all_running_activities(
         if let Ok(activity) = &mut line.activity {
             if !activity.is_stopped() {
                 activity.stop(time);
-                println!(
-                    "Stopped activity: \"{}\" ({}) started at {} ({})",
-                    activity.description,
-                    activity.project,
-                    activity.start.format(conf::FORMAT_DATETIME),
-                    format_util::format_duration(&activity.get_duration()),
+                print_activity_update(
+                    "Stopped activity",
+                    &activity.description,
+                    &activity.project,
+                    &activity.start.format(conf::FORMAT_DATETIME).to_string(),
+                    Option::Some(&format_util::format_duration(&activity.get_duration())),
                 );
-
                 line.set_changed();
             }
         }

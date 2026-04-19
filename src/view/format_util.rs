@@ -1,4 +1,5 @@
 use chrono::Duration;
+use nu_ansi_term::Color;
 
 pub fn format_duration(duration: &Duration) -> String {
     let mut duration_string = String::new();
@@ -17,4 +18,27 @@ pub fn format_duration(duration: &Duration) -> String {
     }
 
     duration_string
+}
+
+pub fn print_activity_update(
+    text: &str,
+    description: &str,
+    project: &str,
+    start: &str,
+    duration: Option<&str>,
+) {
+    println!(
+        "{}: \"{}\" ({}{}{}) at {}{}{} {}",
+        text,
+        description,
+        Color::Green.prefix(),
+        project,
+        Color::Green.suffix(),
+        Color::Purple.prefix(),
+        start,
+        Color::Purple.suffix(),
+        duration
+            .map(|d| format!("({})", d))
+            .unwrap_or("".to_owned()),
+    );
 }
