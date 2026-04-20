@@ -289,6 +289,9 @@ To get started, view the `start` help with `bartib start --help`")
                 .arg(arg_project.clone().required(true))
                 .arg(arg_description.clone().required(true))
         )
+        .subcommand(
+            SubCommand::with_name("push").about("pushes current worklog to JIRA")
+        )
         .get_matches();
 
     let file_name = matches.value_of("file")
@@ -391,6 +394,12 @@ fn run_subcommand(matches: &ArgMatches, file_name: &str) -> Result<()> {
             let activity_description = sub_m.value_of("description").unwrap();
 
             bartib::controller::manipulation::commit(file_name, project_name, activity_description)
+        }
+        ("push", Some(sub_m)) => {
+            let filter = create_filter_for_arguments(sub_m);
+            let processors = create_processors_for_arguments(sub_m);
+
+            bartib::controller::push::jira(file_name, filter, processors)
         }
         _ => bail!("Unknown command"),
     }
