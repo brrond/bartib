@@ -44,6 +44,7 @@ term_size = "0.3.0"
 textwrap = "0.16.0"
 thiserror = "1.0.0"
 wildmatch = "2.3.0"
+reqwest = { version = "0.13.2", features = ["blocking"] }
 
 [features]
 # Timestamps are recorded with second precision instead of the default minute precision
