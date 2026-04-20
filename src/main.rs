@@ -292,6 +292,22 @@ To get started, view the `start` help with `bartib start --help`")
         .subcommand(
             SubCommand::with_name("push")
                 .about("pushes current worklog to JIRA")
+                .arg(&arg_from_date)
+                .arg(&arg_to_date)
+                .arg(&arg_date)
+                .arg(&arg_today)
+                .arg(&arg_yesterday)
+                .arg(&arg_current_week)
+                .arg(&arg_last_week)
+                .arg(
+                    Arg::with_name("number")
+                        .short("n")
+                        .long("number")
+                        .value_name("NUMBER")
+                        .help("maximum number of lines to push")
+                        .required(false)
+                        .takes_value(true),
+                )
                 .arg(
                     Arg::with_name("jira_server")
                         .value_name("jira_server")
