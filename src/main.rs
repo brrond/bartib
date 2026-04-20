@@ -290,7 +290,32 @@ To get started, view the `start` help with `bartib start --help`")
                 .arg(arg_description.clone().required(true))
         )
         .subcommand(
-            SubCommand::with_name("push").about("pushes current worklog to JIRA")
+            SubCommand::with_name("push")
+                .about("pushes current worklog to JIRA")
+                .arg(
+                    Arg::with_name("jira_server")
+                        .value_name("jira_server")
+                        .help("URL of the Jira server")
+                        .env("JIRA_SERVER")
+                        .takes_value(true)
+                        .required(true),
+                )
+                .arg(
+                    Arg::with_name("jira_user")
+                        .value_name("jira_user")
+                        .help("user of the Jira")
+                        .env("JIRA_USER")
+                        .takes_value(true)
+                        .required(true),
+                )
+                .arg(
+                    Arg::with_name("jira_token")
+                        .value_name("jira_token")
+                        .help("token of the Jira")
+                        .env("JIRA_TOKEN")
+                        .takes_value(true)
+                        .required(true),
+                )
         )
         .get_matches();
 
@@ -396,10 +421,22 @@ fn run_subcommand(matches: &ArgMatches, file_name: &str) -> Result<()> {
             bartib::controller::manipulation::commit(file_name, project_name, activity_description)
         }
         ("push", Some(sub_m)) => {
+            // TODO: make sure that at least --today is specified
             let filter = create_filter_for_arguments(sub_m);
             let processors = create_processors_for_arguments(sub_m);
 
-            bartib::controller::push::jira(file_name, filter, processors)
+            let jira_server = sub_m.value_of("jira_server");
+            let jira_user = sub_m.value_of("jira_user");
+            let jira_token = sub_m.value_of("jira_token");
+
+            bartib::controller::push::jira(
+                file_name,
+                filter,
+                processors,
+                jira_server.unwrap(),
+                jira_user.unwrap(),
+                jira_token.unwrap(),
+            )
         }
         _ => bail!("Unknown command"),
     }

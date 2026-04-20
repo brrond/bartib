@@ -5,6 +5,9 @@ pub fn jira(
     file_name: &str,
     filter: getter::ActivityFilter,
     processors: processor::ProcessorList,
+    jira_server: &str,
+    jira_user: &str,
+    jira_token: &str,
 ) -> Result<()> {
     let file_content = bartib_file::get_file_content(file_name)?;
     let activities = getter::get_activities(&file_content).collect();
