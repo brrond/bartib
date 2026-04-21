@@ -4,12 +4,6 @@
 
 Bartib is an easy to use time tracking tool for the command line. It saves a log of all tracked activities as a plaintext file and allows you to create flexible reports.
 
-[![Crates info](https://img.shields.io/crates/v/bartib.svg)](https://crates.io/crates/bartib)
-[![License: GPL](https://img.shields.io/badge/license-GPL-blue)](LICENSE)
-[![Number of Stars](https://img.shields.io/github/stars/nikolassv/bartib.svg?style=flat&logo=github&colorB=green&label=stars)](https://github.com/nikolassv/bartib/stargazers)
-![Rust](https://img.shields.io/github/languages/top/nikolassv/bartib?color=orange)
-[![Tests](https://github.com/nikolassv/bartib/actions/workflows/test.yml/badge.svg)](https://github.com/nikolassv/bartib/actions/workflows/test.yml)
-
 ## Contents
 
 - [Bartib](#bartib)
@@ -193,12 +187,6 @@ brew install bartib
 ```sh
 apk add bartib
 ```
-
-(Currently bartib is only available in the [testing repository](https://pkgs.alpinelinux.org/packages?name=bartib))
-
-#### General Packaging Status
-
-[![Packaging status](https://repology.org/badge/vertical-allrepos/bartib.svg)](https://repology.org/project/bartib/versions)
 
 ### How to build Bartib
 
