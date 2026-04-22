@@ -45,9 +45,9 @@ fn main() -> Result<()> {
         .conflicts_with_all(&["from_date", "to_date"])
         .takes_value(true);
 
-    let arg_today = Arg::with_name("today")
-        .long("today")
-        .help("show activities of the current day")
+    let arg_all = Arg::with_name("all")
+        .long("all")
+        .help("show all activities")
         .required(false)
         .conflicts_with_all(&["from_date", "to_date", "date"])
         .takes_value(false);
@@ -56,14 +56,14 @@ fn main() -> Result<()> {
         .long("yesterday")
         .help("show yesterdays' activities")
         .required(false)
-        .conflicts_with_all(&["from_date", "to_date", "date", "today"])
+        .conflicts_with_all(&["from_date", "to_date", "date", "all"])
         .takes_value(false);
 
     let arg_current_week = Arg::with_name("current_week")
         .long("current_week")
         .help("show activities of the current week")
         .required(false)
-        .conflicts_with_all(&["from_date", "to_date", "date", "today", "yesterday"])
+        .conflicts_with_all(&["from_date", "to_date", "date", "all", "yesterday"])
         .takes_value(false);
 
     let arg_last_week = Arg::with_name("last_week")
@@ -74,7 +74,7 @@ fn main() -> Result<()> {
             "from_date",
             "to_date",
             "date",
-            "today",
+            "all",
             "yesterday",
             "current_week",
         ])
@@ -162,7 +162,7 @@ To get started, view the `start` help with `bartib start --help`")
                 .arg(&arg_from_date)
                 .arg(&arg_to_date)
                 .arg(&arg_date)
-                .arg(&arg_today)
+                .arg(&arg_all)
                 .arg(&arg_yesterday)
                 .arg(&arg_current_week)
                 .arg(&arg_last_week)
@@ -197,7 +197,7 @@ To get started, view the `start` help with `bartib start --help`")
                 .arg(&arg_from_date)
                 .arg(&arg_to_date)
                 .arg(&arg_date)
-                .arg(&arg_today)
+                .arg(&arg_all)
                 .arg(&arg_yesterday)
                 .arg(&arg_current_week)
                 .arg(&arg_last_week)
@@ -295,7 +295,7 @@ To get started, view the `start` help with `bartib start --help`")
                 .arg(&arg_from_date)
                 .arg(&arg_to_date)
                 .arg(&arg_date)
-                .arg(&arg_today)
+                .arg(&arg_all)
                 .arg(&arg_yesterday)
                 .arg(&arg_current_week)
                 .arg(&arg_last_week)
@@ -437,7 +437,6 @@ fn run_subcommand(matches: &ArgMatches, file_name: &str) -> Result<()> {
             bartib::controller::manipulation::commit(file_name, project_name, activity_description)
         }
         ("push", Some(sub_m)) => {
-            // TODO: make sure that at least --today is specified
             let filter = create_filter_for_arguments(sub_m);
             let processors = create_processors_for_arguments(sub_m);
 
@@ -486,10 +485,6 @@ fn create_filter_for_arguments<'a>(sub_m: &'a ArgMatches) -> ActivityFilter<'a> 
     };
 
     let today = Local::now().naive_local().date();
-    if sub_m.is_present("today") {
-        filter.date = Some(today);
-    }
-
     if sub_m.is_present("yesterday") {
         filter.date = Some(today - Duration::days(1));
     }
@@ -515,6 +510,11 @@ fn create_filter_for_arguments<'a>(sub_m: &'a ArgMatches) -> ActivityFilter<'a> 
                 - Duration::weeks(1)
                 + Duration::days(6),
         )
+    }
+
+    // Default is today.
+    if !sub_m.is_present("all") && filter.from_date.is_none() && filter.date.is_none() {
+        filter.date = Some(today);
     }
 
     filter
