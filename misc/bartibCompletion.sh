@@ -23,7 +23,7 @@ function _bartib_completions()
                 COMPREPLY=($(printf "\"%s\"\n" "${CANDIATE_PROJECTS[@]}"))
             fi
         ;;
-        -d)
+        -d|--description)
             if [ -n "$BARTIB_FILE" ]
             then
                 # COMPLETE TASK
@@ -32,7 +32,7 @@ function _bartib_completions()
                 local project="${COMP_WORDS[$COMP_CWORD - 2]}"
                 project=$(echo "$project" | tr -d '"')
                 # Get tasks for that project
-                tasks=$(grep "| $project |" /opt/shared/bartib-hist | cut -d'|' -f 3 | sort | uniq | sed 's/ //' | sed -e 's/\(.*\)/"\1"/')
+                tasks=$(grep "| $project |" $BARTIB_FILE | cut -d'|' -f 3 | sort | uniq | sed 's/ //' | sed -e 's/\(.*\)/"\1"/')
 
                 candidate_tasks=($(compgen -W "${tasks[*]}" -- "$word"))
 
