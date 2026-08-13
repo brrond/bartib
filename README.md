@@ -15,13 +15,13 @@ Please see original repo for more information: https://github.com/nikolassv/bart
 
 ## About the fork
 
-I (@brrond) discovered this project just a couple of days ago, but I'm already a fun. However, there are some crucial functionality missing to cover my use cases. As it stated by the author of Bartib, this tool was never meant to be feature rich and the project is finished. That's why I created this fork: to implement functionality I miss.
+I (@brrond) discovered this project just a couple of days ago, but I'm already having a lot of fun. However, there are some crucial functionality missing to cover my use cases. As it stated by the author of Bartib, this tool was never meant to be feature rich and the project is finished. That's why I created this fork: to implement functionality I miss.
 
 ### Features of the fork
 
 - `bartib start` without a project and/or description ([#1](https://github.com/brrond/bartib/pull/1)).
   
-    Use case: I get a call from a college and want to stop the current task and start the next one, but I don't know what it will be all about. I don't have project and/or description yet.
+    Use case: I get a call from a colleague and want to stop the current task and start the next one, but I don't know what it will be all about. I don't have project and/or description yet.
     Now I can simply use `bartib start` and later `bartib change -p ... -d ...`.
 
 - New subcommand `bartib commit -p ... -d ...` ([#1](https://github.com/brrond/bartib/pull/1)).
