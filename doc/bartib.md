@@ -2,7 +2,7 @@
 
 ## NAME
 
-bartib — a simple command-line time tracker
+bartib - a simple command-line time tracker
 
 ## SYNOPSIS
 
@@ -391,6 +391,3 @@ bartib sanity
 
 [bartib-file-format.md](bartib-file-format.md)
 
-## AUTHORS
-
-Nikolas Schmidt-Voigt &lt;nikolas.schmidt-voigt@posteo.de&gt;
