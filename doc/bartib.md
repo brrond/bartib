@@ -34,7 +34,7 @@ The activity log is a human-readable text file that can be edited manually. See 
 ### start
 
 ```
-bartib start -p PROJECT -d DESCRIPTION [-t TIME]
+bartib start [-p PROJECT] [-d DESCRIPTION] [-t TIME]
 ```
 
 Start a new activity. Any currently running activities are stopped automatically before the new one begins.
@@ -42,10 +42,10 @@ Start a new activity. Any currently running activities are stopped automatically
 **Options**
 
 `-p PROJECT`, `--project PROJECT`
-: The project the activity belongs to. Required.
+: The project the activity belongs to.
 
 `-d DESCRIPTION`, `--description DESCRIPTION`
-: A short description of the activity. Required.
+: A short description of the activity.
 
 `-t TIME`, `--time TIME`
 : Start the activity at the given time instead of now. Format: `HH:MM`.
@@ -237,6 +237,24 @@ Search all activity descriptions and project names for the given term. Supports 
 
 `SEARCH_TERM`
 : The term to search for. Required.
+
+---
+
+### commit
+
+```
+bartib commit [-p PROJECT] [-d DESCRIPTION]
+```
+
+Change current activity save it and start a new blank activity.
+
+**Options**
+
+`-p PROJECT`, `--project PROJECT`
+: The project the activity belongs to.
+
+`-d DESCRIPTION`, `--description DESCRIPTION`
+: A short description of the activity.
 
 ---
 

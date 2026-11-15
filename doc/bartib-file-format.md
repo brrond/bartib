@@ -16,7 +16,7 @@ For a stopped (completed) activity with an end time:
 START_TIME - END_TIME | PROJECT | DESCRIPTION
 ```
 
-Fields are separated by ` | ` (space, pipe, space). The description field is optional — a line with only start time and project is valid.
+Fields are separated by ` | ` (space, pipe, space). The description field is optional - a line with only start time and project is valid.
 
 ## Timestamp Format
 
@@ -58,7 +58,7 @@ The pipe character `|` is used as a field delimiter, so it must be escaped insid
 | `\|`      | literal pipe `|` in a field value |
 | `\\`      | literal backslash `\` in a field value |
 
-Example — a project named `client|work` and a description containing a backslash:
+Example - a project named `client|work` and a description containing a backslash:
 ```
 2021-02-16 16:14 - 2021-02-16 18:23 | client\|work | path: C:\\Users\\alice
 ```
@@ -105,11 +105,9 @@ For each flagged activity, the subcommand prints the description, start time, en
 
 ## Multiple Simultaneously Running Activities
 
-The file format places no restriction on how many activities may be running at the same time — any number of lines without an end time is valid. This situation can arise when the file is edited manually.
+The file format places no restriction on how many activities may be running at the same time - any number of lines without an end time is valid. This situation can arise when the file is edited manually.
 
 Bartib's own commands always prevent accidental accumulation of running activities: `bartib start` and `bartib continue` stop all currently running activities before recording a new one. Likewise, `bartib stop` and `bartib cancel` act on *all* running activities at once, as does `bartib change`.
-
-`bartib current` lists all running activities, so multiple entries will all be shown.
 
 The `bartib sanity` subcommand does **not** flag multiple simultaneous running activities as an error. If that situation is unintentional it can be corrected by manually adding end times to the unwanted entries, or by running `bartib stop` to close all of them at once.
 
@@ -118,3 +116,4 @@ The `bartib sanity` subcommand does **not** flag multiple simultaneous running a
 - Lines that cannot be parsed are silently skipped when reading activities, but are preserved as-is when the file is written back. This means comments or malformed lines are not lost.
 - The file is not sorted; activities appear in the order they were recorded.
 - The file path is configured via the `--file` / `-f` command-line flag or the `BARTIB_FILE` environment variable. The file is created automatically if it does not exist.
+
