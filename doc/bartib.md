@@ -192,21 +192,6 @@ Print a report of time spent per project and activity. Supports the same filter 
 
 ---
 
-### status
-
-```
-bartib status [-p PROJECT]
-```
-
-Show a status overview: the currently running activity, and time totals for today, the current week, and the current month.
-
-**Options**
-
-`-p PROJECT`, `--project PROJECT`
-: Restrict totals to the given project.
-
----
-
 ### last
 
 ```
