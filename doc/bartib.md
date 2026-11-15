@@ -122,16 +122,6 @@ Modify the currently running activity. All currently running activities are upda
 
 ---
 
-### current
-
-```
-bartib current
-```
-
-List all currently running activities (i.e. activities with no end time).
-
----
-
 ### list
 
 ```

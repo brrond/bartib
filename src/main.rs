@@ -154,9 +154,6 @@ To get started, view the `start` help with `bartib start --help`")
             SubCommand::with_name("cancel").about("cancels all currently running activities"),
         )
         .subcommand(
-            SubCommand::with_name("current").about("lists all currently running activities"),
-        )
-        .subcommand(
             SubCommand::with_name("list")
                 .about("list recent activities")
                 .arg(&arg_from_date)
@@ -392,7 +389,6 @@ fn run_subcommand(matches: &ArgMatches, file_name: &str) -> Result<()> {
             bartib::controller::manipulation::stop(file_name, time)
         }
         ("cancel", Some(_)) => bartib::controller::manipulation::cancel(file_name),
-        ("current", Some(_)) => bartib::controller::list::list_running(file_name),
         ("list", Some(sub_m)) => {
             let filter = create_filter_for_arguments(sub_m);
             let processors = create_processors_for_arguments(sub_m);
