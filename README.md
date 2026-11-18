@@ -6,39 +6,21 @@ Bartib is an easy to use time tracking tool for the command line. It saves a log
 
 Please see original repo for more information: https://github.com/nikolassv/bartib
 
-## Contents
-
-- [Bartib](#bartib)
-  - [Contents](#contents)
-  - [About the fork](#about-the-fork)
-    - [Features of the fork](#features-of-the-fork)
-
 ## About the fork
 
-I (@brrond) discovered this project just a couple of days ago, but I'm already having a lot of fun. However, there are some crucial functionality missing to cover my use cases. As it stated by the author of Bartib, this tool was never meant to be feature rich and the project is finished. That's why I created this fork: to implement functionality I miss.
+I (@brrond) discovered this project just a couple of days ago, but I'm already a fan. However, there are some crucial functionality missing to cover use cases. As it stated by the author of Bartib, this tool was never meant to be feature rich and the project is finished. That's why I created this fork: to implement functionality I miss.
 
 ### Features of the fork
 
-- `bartib start` without a project and/or description ([#1](https://github.com/brrond/bartib/pull/1)).
-  
-    Use case: I get a call from a colleague and want to stop the current task and start the next one, but I don't know what it will be all about. I don't have project and/or description yet.
-    Now I can simply use `bartib start` and later `bartib change -p ... -d ...`.
-
-- New subcommand `bartib commit -p ... -d ...` ([#1](https://github.com/brrond/bartib/pull/1)).
-  
-    Synonym of using `bartib change -p ... -d ... && bartib start`
-
-- More colors for outputs ([#2](https://github.com/brrond/bartib/pull/2)).
-
+- `bartib start` without a project and/or description.
+- New subcommand `bartib commit -p ... -d ...` (synonym of using `bartib change -p ... -d ... && bartib start`).
+- More colors for outputs.
 - Integration with tools:
   - Jira:
-    - Push all today entries ([#3](https://github.com/brrond/bartib/pull/3)).
-
-      Pushes all entires to Jira, if JIRA_SERVER, JIRA_USER and JIRA_TOKEN are specified via env.
-
-    - Commit & push (WIP)
+    - Push all entries created today.
     - Sync (WIP)
-   
   - YouTrack (WIP)
+  - GitLab (WIP)
+- Auto edit of entries by `change`. (WIP)
+- Configuration file. (WIP)
 
-- Auto edit of entries by `change` (WIP)
