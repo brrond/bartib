@@ -87,46 +87,6 @@ fn create_activities_group(title: &str, activities: &[&activity::Activity]) -> t
     )
 }
 
-// displays a table with running activities (no end time)
-pub fn list_running_activities(activities: &[&activity::Activity]) {
-    if activities.is_empty() {
-        println!("No Activity is currently running");
-    } else {
-        let mut activity_table = table::Table::new(vec![
-            table::Column {
-                label: "Started At".to_string(),
-                wrap: table::Wrap::NoWrap,
-            },
-            table::Column {
-                label: "Description".to_string(),
-                wrap: table::Wrap::Wrap,
-            },
-            table::Column {
-                label: "Project".to_string(),
-                wrap: table::Wrap::Wrap,
-            },
-            table::Column {
-                label: "Duration".to_string(),
-                wrap: table::Wrap::NoWrap,
-            },
-        ]);
-
-        activities
-            .iter()
-            .map(|activity| {
-                table::Row::new(vec![
-                    activity.start.format(conf::FORMAT_DATETIME).to_string(),
-                    activity.description.clone(),
-                    activity.project.clone(),
-                    format_util::format_duration(&activity.get_duration()),
-                ])
-            })
-            .for_each(|row| activity_table.add_row(row));
-
-        println!("\n{activity_table}");
-    }
-}
-
 // display a list of projects and descriptions with generated index number
 pub fn list_descriptions_and_projects(descriptions_and_projects: &[(&String, &String)]) {
     list_descriptions_and_projects_with_index(

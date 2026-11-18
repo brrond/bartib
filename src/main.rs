@@ -1,7 +1,4 @@
-use std::borrow::Borrow;
-
 use anyhow::{bail, Context, Result};
-use bartib::view::status::StatusReport;
 use chrono::{Datelike, Duration, Local, NaiveDate, NaiveTime};
 use clap::{crate_version, App, AppSettings, Arg, ArgMatches, SubCommand};
 
@@ -104,8 +101,10 @@ fn main() -> Result<()> {
         .version(crate_version!())
         .author("Nikolas Schmidt-Voigt <nikolas.schmidt-voigt@posteo.de>")
         .about("A simple timetracker")
-        .after_help("To get help for a specific subcommand, run `bartib [SUBCOMMAND] --help`.
-To get started, view the `start` help with `bartib start --help`")
+        .after_help(
+            "To get help for a specific subcommand, run `bartib [SUBCOMMAND] --help`.
+To get started, view the `start` help with `bartib start --help`",
+        )
         .setting(AppSettings::SubcommandRequiredElseHelp)
         .setting(AppSettings::VersionlessSubcommands)
         .arg(
@@ -152,9 +151,6 @@ To get started, view the `start` help with `bartib start --help`")
         )
         .subcommand(
             SubCommand::with_name("cancel").about("cancels all currently running activities"),
-        )
-        .subcommand(
-            SubCommand::with_name("current").about("lists all currently running activities"),
         )
         .subcommand(
             SubCommand::with_name("list")
@@ -259,8 +255,9 @@ To get started, view the `start` help with `bartib start --help`")
                 ),
         )
         .subcommand(SubCommand::with_name("check").about("checks file and reports parsing errors"))
-        .subcommand(SubCommand::with_name("sanity").about("checks sanity of bartib log"))
-        .subcommand(SubCommand::with_name("search").about("search for existing descriptions and projects")
+        .subcommand(
+            SubCommand::with_name("search")
+                .about("search for existing descriptions and projects")
                 .arg(
                     Arg::with_name("search_term")
                         .value_name("SEARCH_TERM")
@@ -271,23 +268,10 @@ To get started, view the `start` help with `bartib start --help`")
                 ),
         )
         .subcommand(
-            SubCommand::with_name("status")
-                .about("shows current status and time reports for today, current week, and current month")
-                .arg(
-                    Arg::with_name("project")
-                        .short("p")
-                        .long("project")
-                        .value_name("PROJECT")
-                        .help("show status for this project only")
-                        .takes_value(true)
-                        .required(false),
-                ),
-        )
-        .subcommand(
             SubCommand::with_name("commit")
                 .about("commits current activity")
                 .arg(arg_project.clone().required(true))
-                .arg(arg_description.clone().required(true))
+                .arg(arg_description.clone().required(true)),
         )
         .subcommand(
             SubCommand::with_name("push")
@@ -331,7 +315,7 @@ To get started, view the `start` help with `bartib start --help`")
                         .env("JIRA_TOKEN")
                         .takes_value(true)
                         .required(true),
-                )
+                ),
         )
         .get_matches();
 
@@ -392,7 +376,6 @@ fn run_subcommand(matches: &ArgMatches, file_name: &str) -> Result<()> {
             bartib::controller::manipulation::stop(file_name, time)
         }
         ("cancel", Some(_)) => bartib::controller::manipulation::cancel(file_name),
-        ("current", Some(_)) => bartib::controller::list::list_running(file_name),
         ("list", Some(sub_m)) => {
             let filter = create_filter_for_arguments(sub_m);
             let processors = create_processors_for_arguments(sub_m);
@@ -419,16 +402,9 @@ fn run_subcommand(matches: &ArgMatches, file_name: &str) -> Result<()> {
             bartib::controller::manipulation::start_editor(file_name, optional_editor_command)
         }
         ("check", Some(_)) => bartib::controller::list::check(file_name),
-        ("sanity", Some(_)) => bartib::controller::list::sanity_check(file_name),
         ("search", Some(sub_m)) => {
             let search_term = sub_m.value_of("search_term");
             bartib::controller::list::search(file_name, search_term)
-        }
-        ("status", Some(sub_m)) => {
-            let filter = create_filter_for_arguments(sub_m);
-            let processors = create_processors_for_arguments(sub_m);
-            let writer = create_status_writer(sub_m);
-            bartib::controller::status::show_status(file_name, filter, processors, writer.borrow())
         }
         ("commit", Some(sub_m)) => {
             let project_name = sub_m.value_of("project").unwrap();
@@ -465,11 +441,6 @@ fn create_processors_for_arguments(sub_m: &ArgMatches) -> processor::ProcessorLi
     }
 
     processors
-}
-
-fn create_status_writer(_sub_m: &ArgMatches) -> Box<dyn processor::StatusReportWriter> {
-    let result = StatusReport {};
-    Box::new(result)
 }
 
 fn create_filter_for_arguments<'a>(sub_m: &'a ArgMatches) -> ActivityFilter<'a> {

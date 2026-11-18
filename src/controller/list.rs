@@ -10,16 +10,6 @@ use crate::data::getter;
 use crate::data::processor;
 use crate::view::list;
 
-// lists all currently running activities.
-pub fn list_running(file_name: &str) -> Result<()> {
-    let file_content = bartib_file::get_file_content(file_name)?;
-    let running_activities = getter::get_running_activities(&file_content);
-
-    list::list_running_activities(&running_activities);
-
-    Ok(())
-}
-
 // lists tracked activities
 //
 // the activities will be ordered chronologically.
@@ -57,8 +47,35 @@ pub fn list(
 }
 
 // checks the file content for sanity
-pub fn sanity_check(file_name: &str) -> Result<()> {
+pub fn check(file_name: &str) -> Result<()> {
     let file_content = bartib_file::get_file_content(file_name)?;
+
+    // prints all errors that occurred when reading the bartib file
+    let number_of_errors = file_content
+        .iter()
+        .filter(|line| line.activity.is_err())
+        .count();
+
+    if number_of_errors == 0 {
+        println!("All lines in the file have been successfully parsed as activities.");
+    } else {
+        println!("Found {number_of_errors} line(s) with parsing errors");
+
+        file_content
+            .iter()
+            .filter(|line| line.activity.is_err() && line.plaintext.is_some())
+            .for_each(|line| {
+                if let Err(e) = &line.activity {
+                    println!(
+                        "\n{}\n  -> {} (Line: {})",
+                        line.plaintext.as_ref().unwrap(),
+                        e,
+                        line.line_number.unwrap_or(0)
+                    );
+                }
+            });
+    }
+
     let mut lines_with_activities: Vec<(Option<usize>, Activity)> = file_content
         .into_iter()
         .filter_map(|line| match line.activity {
@@ -111,56 +128,23 @@ fn check_sanity(
     }
 
     if !sane {
-        print_activity_with_line(activity, line_number.unwrap_or(0));
+        {
+            let activity: &Activity = activity;
+            let line_number = line_number.unwrap_or(0);
+            println!(
+                "{} (Started: {}, Ended: {}, Line: {})\n",
+                activity.description,
+                activity.start.format(conf::FORMAT_DATETIME),
+                activity.end.map_or_else(
+                    || String::from("--"),
+                    |end| end.format(conf::FORMAT_DATETIME).to_string()
+                ),
+                line_number
+            )
+        };
     }
 
     sane
-}
-
-fn print_activity_with_line(activity: &Activity, line_number: usize) {
-    println!(
-        "{} (Started: {}, Ended: {}, Line: {})\n",
-        activity.description,
-        activity.start.format(conf::FORMAT_DATETIME),
-        activity.end.map_or_else(
-            || String::from("--"),
-            |end| end.format(conf::FORMAT_DATETIME).to_string()
-        ),
-        line_number
-    )
-}
-
-// prints all errors that occurred when reading the bartib file
-pub fn check(file_name: &str) -> Result<()> {
-    let file_content = bartib_file::get_file_content(file_name)?;
-
-    let number_of_errors = file_content
-        .iter()
-        .filter(|line| line.activity.is_err())
-        .count();
-
-    if number_of_errors == 0 {
-        println!("All lines in the file have been successfully parsed as activities.");
-        return Ok(());
-    }
-
-    println!("Found {number_of_errors} line(s) with parsing errors");
-
-    file_content
-        .iter()
-        .filter(|line| line.activity.is_err() && line.plaintext.is_some())
-        .for_each(|line| {
-            if let Err(e) = &line.activity {
-                println!(
-                    "\n{}\n  -> {} (Line: {})",
-                    line.plaintext.as_ref().unwrap(),
-                    e,
-                    line.line_number.unwrap_or(0)
-                );
-            }
-        });
-
-    Ok(())
 }
 
 // lists all projects

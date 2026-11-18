@@ -2,7 +2,7 @@
 
 ## NAME
 
-bartib — a simple command-line time tracker
+bartib - a simple command-line time tracker
 
 ## SYNOPSIS
 
@@ -34,7 +34,7 @@ The activity log is a human-readable text file that can be edited manually. See 
 ### start
 
 ```
-bartib start -p PROJECT -d DESCRIPTION [-t TIME]
+bartib start [-p PROJECT] [-d DESCRIPTION] [-t TIME]
 ```
 
 Start a new activity. Any currently running activities are stopped automatically before the new one begins.
@@ -42,10 +42,10 @@ Start a new activity. Any currently running activities are stopped automatically
 **Options**
 
 `-p PROJECT`, `--project PROJECT`
-: The project the activity belongs to. Required.
+: The project the activity belongs to.
 
 `-d DESCRIPTION`, `--description DESCRIPTION`
-: A short description of the activity. Required.
+: A short description of the activity.
 
 `-t TIME`, `--time TIME`
 : Start the activity at the given time instead of now. Format: `HH:MM`.
@@ -122,16 +122,6 @@ Modify the currently running activity. All currently running activities are upda
 
 ---
 
-### current
-
-```
-bartib current
-```
-
-List all currently running activities (i.e. activities with no end time).
-
----
-
 ### list
 
 ```
@@ -202,21 +192,6 @@ Print a report of time spent per project and activity. Supports the same filter 
 
 ---
 
-### status
-
-```
-bartib status [-p PROJECT]
-```
-
-Show a status overview: the currently running activity, and time totals for today, the current week, and the current month.
-
-**Options**
-
-`-p PROJECT`, `--project PROJECT`
-: Restrict totals to the given project.
-
----
-
 ### last
 
 ```
@@ -265,6 +240,24 @@ Search all activity descriptions and project names for the given term. Supports 
 
 ---
 
+### commit
+
+```
+bartib commit [-p PROJECT] [-d DESCRIPTION]
+```
+
+Change current activity save it and start a new blank activity.
+
+**Options**
+
+`-p PROJECT`, `--project PROJECT`
+: The project the activity belongs to.
+
+`-d DESCRIPTION`, `--description DESCRIPTION`
+: A short description of the activity.
+
+---
+
 ### edit
 
 ```
@@ -288,15 +281,7 @@ bartib check
 
 Parse the entire activity log and report any lines that cannot be read. Useful after manual edits.
 
----
-
-### sanity
-
-```
-bartib sanity
-```
-
-Check the activity log for logical errors and print a warning for each one found. If no problems are found, prints `No unusual activities.`
+It also checks the activity log for logical errors and prints a warning for each one found. If no problems are found, prints `No unusual activities.`
 
 Two conditions are checked:
 
@@ -368,12 +353,6 @@ Report for a single project, rounding to the nearest 15 minutes:
 bartib report --current_week -p "Important Project" --round 15m
 ```
 
-Show overall status:
-
-```
-bartib status
-```
-
 Search for a term across all activities:
 
 ```
@@ -384,13 +363,9 @@ Check the log for parse errors, then for logical errors:
 
 ```
 bartib check
-bartib sanity
 ```
 
 ## SEE ALSO
 
 [bartib-file-format.md](bartib-file-format.md)
 
-## AUTHORS
-
-Nikolas Schmidt-Voigt &lt;nikolas.schmidt-voigt@posteo.de&gt;
