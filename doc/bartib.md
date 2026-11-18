@@ -281,15 +281,7 @@ bartib check
 
 Parse the entire activity log and report any lines that cannot be read. Useful after manual edits.
 
----
-
-### sanity
-
-```
-bartib sanity
-```
-
-Check the activity log for logical errors and print a warning for each one found. If no problems are found, prints `No unusual activities.`
+It also checks the activity log for logical errors and prints a warning for each one found. If no problems are found, prints `No unusual activities.`
 
 Two conditions are checked:
 
@@ -361,12 +353,6 @@ Report for a single project, rounding to the nearest 15 minutes:
 bartib report --current_week -p "Important Project" --round 15m
 ```
 
-Show overall status:
-
-```
-bartib status
-```
-
 Search for a term across all activities:
 
 ```
@@ -377,7 +363,6 @@ Check the log for parse errors, then for logical errors:
 
 ```
 bartib check
-bartib sanity
 ```
 
 ## SEE ALSO

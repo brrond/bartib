@@ -101,8 +101,10 @@ fn main() -> Result<()> {
         .version(crate_version!())
         .author("Nikolas Schmidt-Voigt <nikolas.schmidt-voigt@posteo.de>")
         .about("A simple timetracker")
-        .after_help("To get help for a specific subcommand, run `bartib [SUBCOMMAND] --help`.
-To get started, view the `start` help with `bartib start --help`")
+        .after_help(
+            "To get help for a specific subcommand, run `bartib [SUBCOMMAND] --help`.
+To get started, view the `start` help with `bartib start --help`",
+        )
         .setting(AppSettings::SubcommandRequiredElseHelp)
         .setting(AppSettings::VersionlessSubcommands)
         .arg(
@@ -253,8 +255,9 @@ To get started, view the `start` help with `bartib start --help`")
                 ),
         )
         .subcommand(SubCommand::with_name("check").about("checks file and reports parsing errors"))
-        .subcommand(SubCommand::with_name("sanity").about("checks sanity of bartib log"))
-        .subcommand(SubCommand::with_name("search").about("search for existing descriptions and projects")
+        .subcommand(
+            SubCommand::with_name("search")
+                .about("search for existing descriptions and projects")
                 .arg(
                     Arg::with_name("search_term")
                         .value_name("SEARCH_TERM")
@@ -265,23 +268,10 @@ To get started, view the `start` help with `bartib start --help`")
                 ),
         )
         .subcommand(
-            SubCommand::with_name("status")
-                .about("shows current status and time reports for today, current week, and current month")
-                .arg(
-                    Arg::with_name("project")
-                        .short("p")
-                        .long("project")
-                        .value_name("PROJECT")
-                        .help("show status for this project only")
-                        .takes_value(true)
-                        .required(false),
-                ),
-        )
-        .subcommand(
             SubCommand::with_name("commit")
                 .about("commits current activity")
                 .arg(arg_project.clone().required(true))
-                .arg(arg_description.clone().required(true))
+                .arg(arg_description.clone().required(true)),
         )
         .subcommand(
             SubCommand::with_name("push")
@@ -325,7 +315,7 @@ To get started, view the `start` help with `bartib start --help`")
                         .env("JIRA_TOKEN")
                         .takes_value(true)
                         .required(true),
-                )
+                ),
         )
         .get_matches();
 
@@ -412,7 +402,6 @@ fn run_subcommand(matches: &ArgMatches, file_name: &str) -> Result<()> {
             bartib::controller::manipulation::start_editor(file_name, optional_editor_command)
         }
         ("check", Some(_)) => bartib::controller::list::check(file_name),
-        ("sanity", Some(_)) => bartib::controller::list::sanity_check(file_name),
         ("search", Some(sub_m)) => {
             let search_term = sub_m.value_of("search_term");
             bartib::controller::list::search(file_name, search_term)
