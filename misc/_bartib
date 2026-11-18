@@ -32,17 +32,14 @@ _bartib() {
                 'change:changes the current activity',
                 'check:checks file and reports parsing errors',
                 'continue:continues a previous activity',
-                'current:lists all currently running activities',
                 'edit:opens the activity log in an editor',
                 'help:Prints this message or the help of the given subcommand(s)',
                 'last:displays the descriptions and projects of recent activities',
                 'list:list recent activities',
                 'projects:list all projects',
                 'report:reports duration of tracked activities',
-                'sanity:checks sanity of bartib log',
                 'search:search for existing descriptions and projects',
                 'start:starts a new activity',
-                'status:shows current status and time reports for today, current week, and current month',
                 'stop:stops all currently running activities'
             )
             _describe -t commands 'bartib command' commands
@@ -110,10 +107,6 @@ _bartib() {
                         '(-p --project)'{-p,--project}'[do report activities for this project only]:PROJECT:_bartib_projects' \
                         '(--round)'--round'[rounds the start and end time to the nearest duration. Durations can be in minutes or hours. E.g. 15m or 4h]:ROUND:' \
                         '(--to)'--to'[end of date range (inclusive)]:DATE:'
-                    ;;
-                sanity)
-                    _arguments -C \
-                        '(-h --help)'{-h,--help}'[Prints help information]'
                     ;;
                 search)
                     _arguments -C \
